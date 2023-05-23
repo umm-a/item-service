@@ -1,15 +1,23 @@
 package com.example.itemservice.Controllers;
 
+import com.example.itemservice.Models.Customer;
 import com.example.itemservice.Models.Item;
 import com.example.itemservice.Repos.ItemRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @RestController
 @RequestMapping ("/items")
 public class ItemController {
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${customer-service.url}")
+    private String customerServiceUrl;
     private final ItemRepo itemRepo;
 
     public ItemController(ItemRepo itemRepo) {
@@ -48,5 +56,11 @@ public class ItemController {
     @GetMapping("/getAllItems")
     public @ResponseBody List<Item> getItems2() {
         return itemRepo.findAll();
+    }
+
+    @GetMapping("/getAllCustomers")
+    public @ResponseBody Customer[] getCustomers() {
+        String customerResourceUrl = customerServiceUrl + "/customers/getAll";
+        return restTemplate.getForObject(customerResourceUrl, Customer[].class);
     }
 }

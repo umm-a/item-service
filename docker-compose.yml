@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  item-service:
+    build: .
+    ports:
+      - "8001:8083"
+    environment:
+      - CUSTOMER_SERVICE_URL=http://orders:8081/
+  orders:
+    image: ghcr.io/lingwangcode/order-service:latest
+    ports:
+      - "8000:8081"
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=${DB_USER}
+      - MYSQL_HOST=host.docker.internal
