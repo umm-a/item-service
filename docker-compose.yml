@@ -1,16 +1,81 @@
-version: "3.9"
+version: '3'
 services:
-  item-service:
-    build: .
+  Customers:
+    image: ghcr.io/annasjoberg/customer-service:latest
     ports:
-      - "8001:8083"
+      - "8081:8080"
+    restart: always
+
     environment:
-      - CUSTOMER_SERVICE_URL=http://orders:8081/
-  orders:
+      MYSQL_HOST: customer-mysql
+      DB_USER: CustomerUser
+      DB_PASSWORD: ${CUSTOMER_PASSWORD}
+      MYSQL_PORT: 3306
+      DB_DATABASE: db_customer
+    depends_on:
+      - customer-mysql
+
+  customer-mysql:
+    container_name: customer-mysql
+    image: mysql:latest
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_DATABASE: db_customer
+      MYSQL_USER: CustomerUser
+      MYSQL_PASSWORD: ${CUSTOMER_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+
+  Orders:
     image: ghcr.io/lingwangcode/order-service:latest
     ports:
-      - "8000:8081"
+      - "8082:8080"
+    restart: always
+
     environment:
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_USER=${DB_USER}
-      - MYSQL_HOST=host.docker.internal
+      MYSQL_HOST: order-mysql
+      DB_USER: OrderUser
+      DB_PASSWORD: ${ORDER_PASSWORD}
+      MYSQL_PORT: 3306
+      DB_DATABASE: db_order
+    depends_on:
+      - order-mysql
+
+  order-mysql:
+    container_name: order-mysql
+    image: mysql:latest
+    ports:
+      - "3311:3306"
+    environment:
+      MYSQL_DATABASE: db_order
+      MYSQL_USER: OrderUser
+      MYSQL_PASSWORD: ${ORDER_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+
+
+  Items:
+    image: ghcr.io/umm-a/item-service:latest
+    ports:
+      - "8083:8080"
+    restart: always
+
+    environment:
+      CUSTOMER_SERVICE_URL: http://Customers:8080
+      MYSQL_HOST: item-mysql
+      DB_USER: ItemUser
+      DB_PASSWORD: ${ITEM_PASSWORD}
+      MYSQL_PORT: 3306
+      DB_DATABASE: db_item
+    depends_on:
+      - item-mysql
+
+  item-mysql:
+    container_name: item-mysql
+    image: mysql:latest
+    ports:
+      - "3310:3306"
+    environment:
+      MYSQL_DATABASE: db_item
+      MYSQL_USER: ItemUser
+      MYSQL_PASSWORD: ${ITEM_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: yes

@@ -27,11 +27,15 @@ public class ItemController {
     @RequestMapping("/getAll")
     public List<Item> getItems(){
         return itemRepo.findAll();
-    }
-    @RequestMapping("/getById/{id}")
-    public Item getItems(@PathVariable Long id){
-        return itemRepo.findById(id).get();
     }*/
+    @RequestMapping("/getById1/{id}")
+    public @ResponseBody Item getItem1(@PathVariable Long id){
+        return itemRepo.findById(id).orElse(null);
+    }
+    @GetMapping("/getById/{id}")
+    public @ResponseBody Item getItem(@PathVariable Long id){
+        return itemRepo.findById(id).orElse(null);
+    }
 
     //curl http://localhost:8080/items/add -H "Content-Type:application/json" -d "{\"name\":\"Lola-shirt\", \"price\":1745, \"stock\":5}" -v
    /* @PostMapping("/add")
@@ -53,7 +57,7 @@ public class ItemController {
     }
 
     //Används till postman etc, GET
-    @GetMapping("/getAllItems")
+    @GetMapping("/getAll")
     public @ResponseBody List<Item> getItems2() {
         return itemRepo.findAll();
     }
