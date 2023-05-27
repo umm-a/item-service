@@ -1,11 +1,15 @@
 package com.example.itemservice.Models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -13,15 +17,27 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Customer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String socialSecurityNumber;
+    @NotBlank(message = "Full name missing")
+    private String fullName;
+    @Column(unique = true)
+    @NotBlank
+    @Size(min = 12, max = 12, message = "Ssn must be unique and exactly 12 characters, no special characters")
+    private String ssn;
+    @Embedded
+    @NotBlank
+    private Address address;
+    @Email
+    private String email;
 
-    public Customer(String name, String socialSecurityNumber) {
-        this.name = name;
-        this.socialSecurityNumber = socialSecurityNumber;
+    public Customer(String fullName, String ssn, Address address, String email) {
+        this.fullName = fullName;
+        this.ssn = ssn;
+        this.address = address;
+        this.email = email;
     }
+
 }
 
 
