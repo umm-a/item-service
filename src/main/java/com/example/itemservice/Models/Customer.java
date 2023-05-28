@@ -22,13 +22,13 @@ public class Customer {
     @NotBlank(message = "Full name missing")
     private String fullName;
     @Column(unique = true)
-    @NotBlank
+    @NotBlank(message = "Must not be blank")
     @Size(min = 12, max = 12, message = "Ssn must be unique and exactly 12 characters, no special characters")
     private String ssn;
     @Embedded
-    @NotBlank
+    @NotBlank(message = "Must not be blank")
     private Address address;
-    @Email
+    @Email(message = "E-mail must be set properly")
     private String email;
 
     public Customer(String fullName, String ssn, Address address, String email) {
