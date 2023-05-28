@@ -23,7 +23,7 @@ public class Customer {
     private String fullName;
     @Column(unique = true)
     @NotBlank(message = "Must not be blank")
-    @Size(min = 12, max = 12, message = "Ssn must be unique and exactly 12 characters, no special characters")
+    @Size(min = 9, max = 13, message = "Ssn must be unique and between 9 and 13 characters")
     private String ssn;
     @Embedded
     @NotBlank(message = "Must not be blank")
