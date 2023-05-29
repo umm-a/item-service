@@ -21,6 +21,7 @@ public class Item {
     private String name;
     @Min(value = 1, message = "Item is not supposed to be given free!")
     private int price;
+    @Min(value = 0, message = "No value below 0!")
     private int stock;
 
     public Item(String name, int price, int stock) {
