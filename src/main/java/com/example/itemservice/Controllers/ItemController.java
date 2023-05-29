@@ -38,12 +38,6 @@ public class ItemController {
     public @ResponseBody Item getItem(@PathVariable Long id){
         return itemRepo.findById(id).orElse(null);
     }
-    @PostMapping("/addWithParams/{name}/{price}/{stock}")
-    public @ResponseBody Item addItem2(@Valid @PathVariable String name, @Valid @PathVariable int price,@Valid @PathVariable int stock){
-        Item item = new Item(name, price, stock);
-        itemRepo.save(item);
-        return item;
-    }
     @PostMapping("/add")
     public @ResponseBody Item addItem3(@Valid @RequestBody Item item){
         itemRepo.save(item);
@@ -58,6 +52,22 @@ public class ItemController {
     public @ResponseBody Customer[] getCustomers() {
         String customerResourceUrl = customerServiceUrl + "/customers/getAll";
         return restTemplate.getForObject(customerResourceUrl, Customer[].class);
+    }
+
+    @GetMapping("/sell/{id}") //ingen trådning dock, ingen rollback
+    public String sellItem(@PathVariable Long id) {
+        Item item = itemRepo.findById(id).orElse(null);
+        if(item!=null){
+            if(item.getStock()>0){
+                item.setStock(item.getStock()-1);
+                itemRepo.save(item);
+                return "Stock of item \"" + item.getName() + "\" is reduced to " + item.getStock();
+            } else {
+                return "Could not sell item \"" + item.getName() + "\". Out of stock!";
+            }
+        } else {
+            return "Item for id " + id + " not found.";
+        }
     }
 
     //istället för att få ett långt stacktrace vill vi fånga upp felen och skriva ut felmeddelanden
