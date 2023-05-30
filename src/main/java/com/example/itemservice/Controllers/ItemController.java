@@ -33,8 +33,8 @@ public class ItemController {
     public ItemController(ItemRepo itemRepo) {
         this.itemRepo = itemRepo;
     }
-    @GetMapping("/getById1/{id}")
-    public @ResponseBody Item getItem1(@PathVariable Long id){
+    @GetMapping("/getById/{id}")
+    public @ResponseBody Item getItem(@PathVariable Long id){
         return itemRepo.findById(id).orElse(null);
     }
   /*  @GetMapping("/getById/{id}")
