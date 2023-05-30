@@ -1,5 +1,6 @@
 package com.example.itemservice.Controllers;
 
+import com.example.itemservice.Exception.ItemNotFoundException;
 import com.example.itemservice.Models.Customer;
 import com.example.itemservice.Models.Item;
 import com.example.itemservice.Repos.ItemRepo;
@@ -12,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @Validated
@@ -36,26 +39,35 @@ public class ItemController {
     public ItemController(ItemRepo itemRepo) {
         this.itemRepo = itemRepo;
     }
-  //  @RequestMapping("/getById1/{id}")
-    //public @ResponseBody Item getItem1(@PathVariable Long id){
-      //  return itemRepo.findById(id).orElse(null);
-    //}
-    @GetMapping("/getById/{id}")
-    @Operation(summary = "fetches an Item by its ID")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Fetch of Item successful",
-                    content = {@Content(mediaType = "application/json")}),
-            @ApiResponse(responseCode = "400",
-                    description = "The request was malformed or had invalid parameters",
-                    content = @Content),
-            @ApiResponse(responseCode = "404",
-                    description = "Item not found",
-                    content = @Content)
-    })
+  /*  @GetMapping("/getById/{id}")
     public @ResponseBody Item getItem(@PathVariable Long id){
         return itemRepo.findById(id).orElse(null);
+    }*/
+  /*  @GetMapping("/getById/{id}")
+    public @ResponseBody Item getItem(@PathVariable Long id){
+        return itemRepo.findById(id).orElse(null);
+    }*/
+
+ /*  @GetMapping(path = "/getById/{id}")
+   public ResponseEntity<Item> getById(@PathVariable Long id) {
+       Optional<Item> item = itemRepo.findById(id);
+       if (item.isPresent()) {
+           return ResponseEntity.ok(item.get());
+       } else {
+           throw new ItemNotFoundException("Item not found with ID: " + id);
+       }
+   }*/
+
+   @GetMapping("/getById/{id}")
+    public @ResponseBody Item getItem(@PathVariable Long id){
+        if (itemRepo.findById(id).isPresent()) {
+            return itemRepo.findById(id).get();
+        } else {
+            throw new ItemNotFoundException("Item not found with ID: " + id);
+        }
     }
+
+
     @PostMapping("/add")
     public @ResponseBody Item addItem3(@Valid @RequestBody Item item){
         itemRepo.save(item);
@@ -93,7 +105,7 @@ public class ItemController {
             if(item.getStock()>0){
                 item.setStock(item.getStock()-1);
                 itemRepo.save(item);
-                return "Stock of item \"" + item.getName() + "\" is reduced to " + item.getStock();
+                return "Stock of item \"" + item.getName() + " price: " + item.getPrice() + "SEK" + "\" is reduced to " + item.getStock();
             } else {
                 return "Could not sell item \"" + item.getName() + "\". Out of stock!";
             }
