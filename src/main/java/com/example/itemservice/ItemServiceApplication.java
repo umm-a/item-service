@@ -2,12 +2,25 @@ package com.example.itemservice;
 
 import com.example.itemservice.Models.Item;
 import com.example.itemservice.Repos.ItemRepo;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
-
+@OpenAPIDefinition(
+        info = @Info(
+                title = "Item Service API",
+                version = "2.0.0",
+                description = "API for managing items in the web shop",
+                contact = @Contact(
+                        name = "Items department",
+                        email = "items.department@ourWebshop.com"
+                )
+        )
+)
 @SpringBootApplication
 public class ItemServiceApplication {
 
