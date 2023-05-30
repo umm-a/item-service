@@ -75,7 +75,7 @@ public class ItemController {
             if(item.getStock()>0){
                 item.setStock(item.getStock()-1);
                 itemRepo.save(item);
-                return "Stock of item \"" + item.getName() + "\" is reduced to " + item.getStock();
+                return "Stock of item \"" + item.getName() + " price: " + item.getPrice() + "SEK" + "\" is reduced to " + item.getStock();
             } else {
                 return "Could not sell item \"" + item.getName() + "\". Out of stock!";
             }
