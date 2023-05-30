@@ -33,15 +33,6 @@ public class ItemController {
     public ItemController(ItemRepo itemRepo) {
         this.itemRepo = itemRepo;
     }
-    @RequestMapping("/getById1/{id}")
-    public @ResponseBody Item getItem1(@PathVariable Long id){
-        return itemRepo.findById(id).orElse(null);
-    }
-   /* @GetMapping("/getById/{id}")
-    public @ResponseBody Item getItem(@PathVariable Long id){
-        return itemRepo.findById(id).orElse(null);
-    }
-    */
    @GetMapping(path = "/getById/{id}")
    public ResponseEntity<Item> getById(@PathVariable Long id) {
        Optional<Item> item = itemRepo.findById(id);
