@@ -33,16 +33,16 @@ public class ItemController {
     public ItemController(ItemRepo itemRepo) {
         this.itemRepo = itemRepo;
     }
-    @GetMapping("/getById/{id}")
-    public @ResponseBody Item getItem(@PathVariable Long id){
-        return itemRepo.findById(id).orElse(null);
-    }
   /*  @GetMapping("/getById/{id}")
     public @ResponseBody Item getItem(@PathVariable Long id){
         return itemRepo.findById(id).orElse(null);
-    }
+    }*/
+  /*  @GetMapping("/getById/{id}")
+    public @ResponseBody Item getItem(@PathVariable Long id){
+        return itemRepo.findById(id).orElse(null);
+    }*/
 
-   @GetMapping(path = "/getById/{id}")
+ /*  @GetMapping(path = "/getById/{id}")
    public ResponseEntity<Item> getById(@PathVariable Long id) {
        Optional<Item> item = itemRepo.findById(id);
        if (item.isPresent()) {
@@ -50,7 +50,7 @@ public class ItemController {
        } else {
            throw new ItemNotFoundException("Item not found with ID: " + id);
        }
-   }
+   }*/
 
    @GetMapping("/getById/{id}")
     public @ResponseBody Item getItem(@PathVariable Long id){
@@ -60,7 +60,7 @@ public class ItemController {
             throw new ItemNotFoundException("Item not found with ID: " + id);
         }
     }
-   */
+
 
     @PostMapping("/add")
     public @ResponseBody Item addItem3(@Valid @RequestBody Item item){
