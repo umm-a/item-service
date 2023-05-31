@@ -4,6 +4,11 @@ import com.example.itemservice.Exception.ItemNotFoundException;
 import com.example.itemservice.Models.Customer;
 import com.example.itemservice.Models.Item;
 import com.example.itemservice.Repos.ItemRepo;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +27,7 @@ import java.util.Optional;
 @RestController
 @Validated
 @RequestMapping ("/items")
+@Tag(name = "Items", description = "Operations related to managing data concerning Items")
 public class ItemController {
     @Autowired
     private RestTemplate restTemplate;
@@ -68,6 +74,7 @@ public class ItemController {
         return item;
     }
     @GetMapping("/getAll")
+    @Operation(summary = "Fetches all Items", description = "Fetches all Items in db and returns them as a List in JSON format")
     public @ResponseBody List<Item> getItems2() {
         return itemRepo.findAll();
     }
@@ -79,6 +86,19 @@ public class ItemController {
     }
 
     @GetMapping("/sell/{id}") //ingen trådning dock, ingen rollback
+    @Operation(summary = "Sells one item.",
+            description = "Checks if item with given ID is in stock and returns a String with success/failure message")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Item sale successful",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400",
+                    description = "The request was malformed or had invalid parameters",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Item not found",
+                    content = @Content)
+    })
     public String sellItem(@PathVariable Long id) {
         Item item = itemRepo.findById(id).orElse(null);
         if(item!=null){

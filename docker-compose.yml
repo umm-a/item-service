@@ -57,7 +57,7 @@ services:
 
 
   Items:
-    image: ghcr.io/umm-a/item-service:latest
+    image: ghcr.io/annasjoberg/item-service:latest
     ports:
       - "8083:8080"
     restart: always
