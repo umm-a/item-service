@@ -58,6 +58,7 @@ public class ItemController {
 
 
     @PostMapping("/add")
+    @Operation(summary = "Adds a new item", description = "Stores a new Item it in the database.")
     public @ResponseBody Item addItem3(@Valid @RequestBody Item item){
         itemRepo.save(item);
         return item;
