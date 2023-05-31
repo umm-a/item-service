@@ -12,7 +12,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/itemHTML")
 public class ItemHTMLController {
-
+//TODO OBS ANVÄNDS EJ, BARA TEST
     private final ItemRepo itemRepo;
 
     public ItemHTMLController(ItemRepo itemRepo) {
