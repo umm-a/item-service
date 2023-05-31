@@ -39,33 +39,22 @@ public class ItemController {
     public ItemController(ItemRepo itemRepo) {
         this.itemRepo = itemRepo;
     }
-  /*  @GetMapping("/getById/{id}")
-    public @ResponseBody Item getItem(@PathVariable Long id){
-        return itemRepo.findById(id).orElse(null);
-    }*/
     @GetMapping("/getById/{id}")
+    @Operation(summary = "fetches an Item by its ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Fetch of Item successful",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400",
+                    description = "The request was malformed or had invalid parameters",
+                    content = @Content),
+            @ApiResponse(responseCode = "404",
+                    description = "Item not found",
+                    content = @Content)
+    })
     public @ResponseBody Item getItem(@PathVariable Long id){
         return itemRepo.findById(id).orElse(null);
     }
-
- /*  @GetMapping(path = "/getById/{id}")
-   public ResponseEntity<Item> getById(@PathVariable Long id) {
-       Optional<Item> item = itemRepo.findById(id);
-       if (item.isPresent()) {
-           return ResponseEntity.ok(item.get());
-       } else {
-           throw new ItemNotFoundException("Item not found with ID: " + id);
-       }
-   }*/
-
- /*  @GetMapping("/getById/{id}")
-    public @ResponseBody Item getItem(@PathVariable Long id){
-        if (itemRepo.findById(id).isPresent()) {
-            return itemRepo.findById(id).get();
-        } else {
-            throw new ItemNotFoundException("Item not found with ID: " + id);
-        }
-    }*/
 
 
     @PostMapping("/add")
