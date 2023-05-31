@@ -59,6 +59,18 @@ public class ItemController {
    }*/
 
    @GetMapping("/getById/{id}")
+   @Operation(summary = "fetches an Item by its ID")
+   @ApiResponses(value = {
+           @ApiResponse(responseCode = "200",
+                   description = "Fetch of Item successful",
+                   content = {@Content(mediaType = "application/json")}),
+           @ApiResponse(responseCode = "400",
+                   description = "The request was malformed or had invalid parameters",
+                   content = @Content),
+           @ApiResponse(responseCode = "404",
+                   description = "Item not found",
+                   content = @Content)
+   })
     public @ResponseBody Item getItem(@PathVariable Long id){
         if (itemRepo.findById(id).isPresent()) {
             return itemRepo.findById(id).get();
